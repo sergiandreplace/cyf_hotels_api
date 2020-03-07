@@ -1,0 +1,15 @@
+{
+  "name": "cyf-hotels-api",
+  "version": "1.0.0",
+  "description": "API for the potato app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sergi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^7.18.2"
+  }
+}
