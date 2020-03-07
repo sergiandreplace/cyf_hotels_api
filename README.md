@@ -15,7 +15,7 @@ In order to run this project you must:
 * Execute `npm start` to launch the server
 * Get fun
 
-![Let's code](https://tenor.com/zm3t.gif)
+![Let's code](https://media1.tenor.com/images/03d14d3bfe12e420efd76774ab1615c9/tenor.gif?itemid=6007757)
 
 You will need to have the hotels PostgreSQL database made during the course. You can find information on how to create it on (https://migracode-barcelona.github.io/syllabus/db/week-2/lesson.html)
 
