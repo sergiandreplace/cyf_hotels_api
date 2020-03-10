@@ -19,5 +19,7 @@ In order to run this project you must:
 
 You will need to have the hotels PostgreSQL database made during the course. You can find information on how to create it on (https://migracode-barcelona.github.io/syllabus/db/week-2/lesson.html)
 
+Last change: March 10th, 2020
+
 
 
