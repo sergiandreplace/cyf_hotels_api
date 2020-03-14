@@ -46,6 +46,30 @@ app.post("/hotels", function(req, res) {
     });
 });
 
+app.get("/customers", function(req, res) {
+  pool
+    .query("SELECT * FROM customers")
+    .then(result => res.json(result.rows))
+    .catch(err => res.status(500).send(error));
+});
+
+
+app.post("/customers", function(req, res) {
+  const newName= req.body.name;
+  const newEmail = req.body.email;
+  const newAddress = req.body.address;
+  const newCity = req.body.city;
+  const newPostcode = req.body.postcode;
+  const newCountry = req.body.country;
+
+  const query = "INSERT INTO customers (name, email, address, city, postcode, country) VALUES ($1, $2, $3, $4, $5, $6)"
+  const params = [newName, newEmail, newAddress, newCity, newPostcode, newCountry];
+
+  pool.query(query, params)
+    .then(() => res.send("Customer created"))
+    .catch(e => res.status(500).send(e))
+})
+
 app.listen(3000, function() {
   console.log("Server is listening on port 3000. Ready to accept requests!");
 });
