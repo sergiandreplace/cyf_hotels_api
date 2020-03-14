@@ -55,6 +55,14 @@ app.get("/customers", function(req, res) {
     .catch(err => res.status(500).send(error));
 });
 
+app.get("/customers/:customerId", function(req, res) {
+  const customerId  = req.params.customerId
+
+  pool.query("SELECT * FROM customers where id = $1", [customerId])
+  .then(result => res.json(result.rows))
+  .catch(err => res.status(500).send(error));
+})
+
 
 
 app.post("/customers", function(req, res) {
