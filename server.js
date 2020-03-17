@@ -1,8 +1,8 @@
 const express = require("express");
-const app = express();
 const { Pool } = require("pg");
 const bodyParser = require("body-parser");
 const secrets = require("./secrets");
+
 
 const pool = new Pool({
   user: "postgres",
@@ -12,7 +12,10 @@ const pool = new Pool({
   port: 5432
 });
 
-app.use(bodyParser.json());
+const app = express();
+
+app.use(bodyParser.json())
+
 
 app.get("/hotels", function(req, res) {
   const hotelNameQuery = req.query.name;
@@ -30,6 +33,31 @@ app.get("/hotels", function(req, res) {
     .then(result => res.json(result.rows))
     .catch(err => res.status(500).send(error));
 });
+
+app.post("/hotels", function(req, res) {
+  const newName = req.body.name
+  const newRooms = req.body.rooms
+  const newPostcode = req.body.postcode
+
+  pool.query(`INSERT INTO hotels(name, rooms, postcode) VALUES ($1, $2, $3)`,[newName, newRooms, newPostcode])
+  .then(result => res.send("Hotel created!"))
+  .catch(e => res.status(500).send(e))
+})
+
+app.put("/hotels/:hotelId", function(req,res) {
+  const hotelId = req.params.hotelId
+  const newName = req.body.name
+  const newRooms = req.body.rooms
+  const newPostcode = req.body.postcode
+
+
+  
+  pool.query('UPDATE hotels SET name = $1, rooms=$2, postcode=$3 WHERE id = $4', 
+  [newName, newRooms, newPostcode, hotelId])
+    .then(result => res.send("Hotel updated"))
+    .catch(e => res.status(500).send(e))
+
+})
 
 app.get("/hotels/:hotelId", (req, res) => {
   const hotelId = req.params.hotelId;
@@ -112,6 +140,7 @@ app.post("/customers", function(req, res) {
       }
     });
 });
+
 
 app.listen(3000, function() {
   console.log("Server is listening on port 3000. Ready to accept requests!");
