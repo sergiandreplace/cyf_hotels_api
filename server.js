@@ -67,6 +67,20 @@ app.put("/hotels/:hotelId", function(req,res) {
 
 })
 
+app.delete("/hotels/:hotelId", function(req, res){
+  const hotelId = req.params.hotelId
+
+  pool.query("DELETE FROM bookings WHERE hotel_id=$1", [hotelId])
+    .then(()=> {
+
+      pool.query("DELETE FROM hotels WHERE id=$1", [hotelId])
+        .then(()=> res.send(`Hotel with id ${hotelId} deleted!!!`))
+        .catch( e => res.status(500).send(e))
+
+    })
+    .catch( e => res.status(500).send(e))
+})
+
 app.get("/customers", function(req, res) {
   const customerNameQuery = req.query.name;
 
@@ -161,6 +175,19 @@ app.put("/customers/:customerId", function(req, res) {
       .catch(e => console.error(e));
 });
 
+app.delete("/customers/:customerId", function(req, res) {
+  const customerId = req.params.customerId
+
+  pool.query("DELETE FROM bookings WHERE customer_id = $1", [customerId])
+    .then(() => { 
+      pool.query("DELETE FROM customers WHERE id = $1", [customerId])
+        .then(result => res.send(`Customer with id ${customerId} deleted`))
+        .catch(e => res.status(500).send(e))
+    })
+    .catch(e => res.status(500).send(e))
+})
+
 app.listen(3000, function() {
   console.log("Server is listening on port 3000. Ready to accept requests!");
 });
+
