@@ -16,7 +16,6 @@ const app = express();
 
 app.use(bodyParser.json())
 
-
 app.get("/hotels", function(req, res) {
   const hotelNameQuery = req.query.name;
   console.log(`query name: ${hotelNameQuery}`);
@@ -32,6 +31,15 @@ app.get("/hotels", function(req, res) {
     .query(query)
     .then(result => res.json(result.rows))
     .catch(err => res.status(500).send(error));
+});
+
+app.get("/hotels/:hotelId", (req, res) => {
+  const hotelId = req.params.hotelId;
+
+  pool
+    .query("SELECT * FROM hotels WHERE id=$1", [hotelId])
+    .then(result => res.json(result.rows))
+    .catch(e => console.error(e));
 });
 
 app.post("/hotels", function(req, res) {
@@ -58,15 +66,6 @@ app.put("/hotels/:hotelId", function(req,res) {
     .catch(e => res.status(500).send(e))
 
 })
-
-app.get("/hotels/:hotelId", (req, res) => {
-  const hotelId = req.params.hotelId;
-
-  pool
-    .query("SELECT * FROM hotels WHERE id=$1", [hotelId])
-    .then(result => res.json(result.rows))
-    .catch(e => console.error(e));
-});
 
 app.get("/customers", function(req, res) {
   const customerNameQuery = req.query.name;
