@@ -139,7 +139,27 @@ app.post("/customers", function(req, res) {
       }
     });
 });
+// the address, the city, the postcode and the country
+app.put("/customers/:customerId", function(req, res) {
+  const customerId = req.params.customerId;
+  const newName = req.body.name;
+  const newEmail = req.body.email;
+  const newAddress = req.body.address;
+  const newCity = req.body.city;
+  const newCountry = req.body.country;
+  const newPostcode = req.body.postcode;
 
+  if (!newEmail || newEmail === "") {
+    return res.status(404).send("The mail is not valid")
+  }
+
+  pool.query(
+    "UPDATE customers SET email=$1, address=$2, city=$3, country=$4, postcode=$5, name=$6 WHERE id=$7", 
+    [newEmail, newAddress, newCity, newCountry,newPostcode,newName,  customerId]
+  )
+      .then(() => res.send(`Customer ${customerId} updated!`))
+      .catch(e => console.error(e));
+});
 
 app.listen(3000, function() {
   console.log("Server is listening on port 3000. Ready to accept requests!");
